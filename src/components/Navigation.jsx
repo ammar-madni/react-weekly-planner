@@ -31,7 +31,8 @@ export default function Navigation({ showDropdown, setShowDropdown, showDayOptio
         setDate={setDate}
       />
       <div className="mb-6 text-2xl font-semibold text-gray-700 md:mb-0">
-        {format(date, "EEEE do MMMM yyyy")}
+        Week Starting:<br></br>
+        {format(date, "do MMMM yyyy")}
       </div>
       <div className="flex mb-6 space-x-4 md:mb-0">
         <span className="">
