@@ -7,71 +7,69 @@ export default function Navigation({ showDropdown, setShowDropdown, showDayOptio
   const openDropdown = () => setShowDropdown(prev => !prev)
 
   return (
-    <div className="flex flex-col items-center justify-between pt-10 md:flex-row">
-      <button
-        onClick={openDropdown}
-        type="button"
-        className="inline-flex items-center order-last px-4 py-2 text-sm font-medium text-white bg-indigo-600 border border-transparent rounded-md shadow-sm dropdown-target hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 md:order-first"
-      >
-        Add / Edit Event
+    <div className="flex flex-col py-14 space-y-10">
+      <div className="flex-auto flex flex-col md:flex-row items-center justify-between">
+        <button
+          onClick={openDropdown}
+          type="button"
+          className="uppercase inline-flex items-center order-last px-4 py-2 text-sm font-medium text-white bg-indigo-600 border border-transparent rounded-md shadow-sm dropdown-target hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 md:order-first"
+        >
+          New Event
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            className={!showDropdown ? "h-5 w-5 ml-2 dropdown-target" : "ml-2 h-5 w-5 dropdown-target transform rotate-45"} viewBox="0 0 20 20" fill="currentColor">
+            <path className="dropdown-target" fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-11a1 1 0 10-2 0v2H7a1 1 0 100 2h2v2a1 1 0 102 0v-2h2a1 1 0 100-2h-2V7z" clipRule="evenodd" />
+          </svg>
+
         </button>
-
-      <Dropdown
-        showDropdown={showDropdown}
-        setShowDropdown={setShowDropdown}
-        timeSlots={timeSlots}
-        weekdays={weekdays}
-        eventData={eventData}
-        setEventData={setEventData}
-        showDayOptions={showDayOptions}
-        setShowDayOptions={setShowDayOptions}
-        showTimeOptions={showTimeOptions}
-        setShowTimeOptions={setShowTimeOptions}
-        date={date}
-        setDate={setDate}
-      />
-      <div className="mb-6 text-2xl font-semibold text-gray-700 md:mb-0">
-        Week Starting:<br></br>
-        {format(date, "do MMMM yyyy")}
-      </div>
-      <div className="flex mb-6 space-x-4 md:mb-0">
-        <span className="">
-          <button
-            onClick={() => setDate(prev => {
-
-              const previousWeek = new Date(prev.getFullYear(), prev.getMonth(), prev.getDate() - 7)
-
-              return previousWeek
-
-            })}
-            type="button"
-            className="inline-flex items-center px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-          >
-            Prev
-            </button>
-        </span>
-
-        <div className="flex items-center justify-center flex-auto text-xl text-gray-700">
-          Week: {format(date, "w")}
+        <div className="mb-6 text-2xl font-semibold text-center text-gray-700 md:mb-0">
+          {format(date, "do MMMM yyyy")}
         </div>
+        <div className="flex mb-6 space-x-4 md:mb-0">
+          <span className="">
+            <button
+              onClick={() => setDate(prev => {
+                const previousWeek = new Date(prev.getFullYear(), prev.getMonth(), prev.getDate() - 7)
 
-        <span className="">
-          <button
-            onClick={() => setDate(prev => {
+                return previousWeek
+              })}
+              type="button"
+              className="uppercase inline-flex items-center px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+            >
+              Prev
+              </button>
+          </span>
+          <span className="">
+            <button
+              onClick={() => setDate(prev => {
 
-              const nextWeek = new Date(prev.getFullYear(), prev.getMonth(), prev.getDate() + 7)
+                const nextWeek = new Date(prev.getFullYear(), prev.getMonth(), prev.getDate() + 7)
 
-              return nextWeek
+                return nextWeek
 
-            })}
-            type="button"
-            className="inline-flex items-center px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-          >
-            Next
-            </button>
-        </span>
+              })}
+              type="button"
+              className="uppercase inline-flex items-center px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+            >
+              Next
+              </button>
+          </span>
+        </div>
       </div>
-
+      <Dropdown
+          showDropdown={showDropdown}
+          setShowDropdown={setShowDropdown}
+          timeSlots={timeSlots}
+          weekdays={weekdays}
+          eventData={eventData}
+          setEventData={setEventData}
+          showDayOptions={showDayOptions}
+          setShowDayOptions={setShowDayOptions}
+          showTimeOptions={showTimeOptions}
+          setShowTimeOptions={setShowTimeOptions}
+          date={date}
+          setDate={setDate}
+        />
     </div>
   )
 }

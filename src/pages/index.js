@@ -1,3 +1,4 @@
+import { format } from 'date-fns'
 import { useState } from 'react'
 
 import Calendar from  "../components/Calendar"
@@ -48,43 +49,53 @@ export default function Home() {
 
   const dt = new Date()
 
+  const week = format(dt, "w")
+
   const [date, setDate] = useState(dt)
   const [eventData, setEventData] = useState(database)
   const [showDropdown, setShowDropdown] = useState(false)
+  const [clickOutside, setClickOutside] = useState(false)
   const [showDayOptions, setShowDayOptions] = useState(false)
   const [showTimeOptions, setShowTimeOptions] = useState(false)
 
   return (
 
-        <div
-          onClick={e => {
-            !(e.target.classList.contains("dropdown-target")) ? setShowDropdown(false) : null
-          }}
-          className="container mx-auto"
-        >
-          <Navigation
-            eventData={eventData}
-            setEventData={setEventData}
-            timeSlots={timeSlots}
-            weekdays={weekdays}
-            showDropdown={showDropdown}
-            setShowDropdown={setShowDropdown}
-            showDayOptions={showDayOptions}
-            setShowDayOptions={setShowDayOptions}
-            showTimeOptions={showTimeOptions}
-            setShowTimeOptions={setShowTimeOptions}
-            date={date}
-            setDate={setDate}
-          />
-          <Calendar
-            eventData={eventData}
-            setEventData={setEventData}
-            timeSlots={timeSlots}
-            weekdays={weekdays}
-            date={date}
-            setDate={setDate}
-          />
-        </div>
+    <div
+      onClick={e => {
+        // if (!e.target.classList.contains("dropdown-target") && showDropdown) {
+        //   setShowDropdown(false)
+        // }
+        if (!e.target.classList.contains("editing-mode")) {
+          setClickOutside(true)
+        }
+      }}
+      className="container mx-auto"
+    >
+      <Navigation
+        eventData={eventData}
+        setEventData={setEventData}
+        timeSlots={timeSlots}
+        weekdays={weekdays}
+        showDropdown={showDropdown}
+        setShowDropdown={setShowDropdown}
+        showDayOptions={showDayOptions}
+        setShowDayOptions={setShowDayOptions}
+        showTimeOptions={showTimeOptions}
+        setShowTimeOptions={setShowTimeOptions}
+        date={date}
+        setDate={setDate}
+      />
+      <Calendar
+        eventData={eventData}
+        setEventData={setEventData}
+        timeSlots={timeSlots}
+        weekdays={weekdays}
+        date={date}
+        setDate={setDate}
+        clickOutside={clickOutside}
+        setClickOutside={setClickOutside}
+      />
+    </div>
         
 
   )
