@@ -1,6 +1,6 @@
 import TableData from "./TableData"
 
-export default function Calendar({ timeSlots, weekdays, eventData, setEventData, date, setDate, clickOutside, setClickOutside }) {
+export default function Calendar({ timeSlots, weekdays, eventData, setEventData, date, setDate }) {
   return (
     <div className="flex flex-col">
       <div className="-my-2 sm:-mx-6 lg:-mx-8">
@@ -40,8 +40,6 @@ export default function Calendar({ timeSlots, weekdays, eventData, setEventData,
                         setEventData={setEventData}
                         date={date}
                         setDate={setDate}
-                        clickOutside={clickOutside}
-                        setClickOutside={setClickOutside}
                       />
                     ))}
                   </tr>

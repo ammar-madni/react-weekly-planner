@@ -1,4 +1,3 @@
-import { format } from 'date-fns'
 import { useState } from 'react'
 
 import Calendar from  "../components/Calendar"
@@ -49,26 +48,15 @@ export default function Home() {
 
   const dt = new Date()
 
-  const week = format(dt, "w")
-
   const [date, setDate] = useState(dt)
   const [eventData, setEventData] = useState(database)
   const [showDropdown, setShowDropdown] = useState(false)
-  const [clickOutside, setClickOutside] = useState(false)
   const [showDayOptions, setShowDayOptions] = useState(false)
   const [showTimeOptions, setShowTimeOptions] = useState(false)
 
   return (
 
     <div
-      onClick={e => {
-        // if (!e.target.classList.contains("dropdown-target") && showDropdown) {
-        //   setShowDropdown(false)
-        // }
-        if (!e.target.classList.contains("editing-mode")) {
-          setClickOutside(true)
-        }
-      }}
       className="container mx-auto"
     >
       <Navigation
@@ -92,8 +80,6 @@ export default function Home() {
         weekdays={weekdays}
         date={date}
         setDate={setDate}
-        clickOutside={clickOutside}
-        setClickOutside={setClickOutside}
       />
     </div>
         

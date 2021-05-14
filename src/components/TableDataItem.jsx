@@ -1,19 +1,14 @@
 import { format } from "date-fns";
 import produce from "immer"
 import { merge as _merge } from "lodash"
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 
-export default function TableDataItem({ event, index, day, time, eventData, setEventData, date, setDate, clickOutside, setClickOutside }) {
+export default function TableDataItem({ event, index, day, time, eventData, setEventData, date, setDate }) {
 
   const week = [format(date, "w")]
 
   const textareaRef = useRef()
   const [editable, setEditable] = useState(false)
-  
-  useEffect(() => {if (clickOutside && editable) {
-    setEditable(false)
-    setClickOutside(false)
-  }},[clickOutside]) 
 
   return (
     <div className="p-4 space-y-4 bg-gray-100 rounded-md editing-mode">

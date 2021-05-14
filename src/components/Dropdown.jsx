@@ -38,7 +38,7 @@ export default function Dropdown({ showDropdown, setShowDropdown, showDayOptions
       const newEvent = {
         [week]: {
           [selectedDay]: {
-            [selectedTimeSlot]: [...eventData[week][selectedDay][selectedTimeSlot], newEventValue.trin()]
+            [selectedTimeSlot]: [...eventData[week][selectedDay][selectedTimeSlot], newEventValue.trim()]
           }
         }
       }
@@ -47,6 +47,7 @@ export default function Dropdown({ showDropdown, setShowDropdown, showDayOptions
       })
       setEventData(newState)
       setNewEventValue("")
+      setShowError(false)
     } else {
       const newEvent = {
         [week]: {
@@ -60,6 +61,7 @@ export default function Dropdown({ showDropdown, setShowDropdown, showDayOptions
       })
       setEventData(newState)
       setNewEventValue("")
+      setShowError(false)
     }
   }
 

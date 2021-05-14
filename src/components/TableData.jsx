@@ -2,7 +2,7 @@ import { format } from "date-fns";
 
 import TableDataItem from "./TableDataItem"
 
-export default function TableData({ day, time, eventData, setEventData, date, setDate, clickOutside, setClickOutside }) {
+export default function TableData({ day, time, eventData, setEventData, date, setDate }) {
 
   const week = [format(date, "w")]
 
@@ -23,8 +23,6 @@ export default function TableData({ day, time, eventData, setEventData, date, se
           setEventData={setEventData}
           date={date}
           setDate={setDate}
-          clickOutside={clickOutside}
-          setClickOutside={setClickOutside}
         />
       )}     
     </td>
