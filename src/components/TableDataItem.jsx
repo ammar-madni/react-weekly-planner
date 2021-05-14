@@ -5,6 +5,7 @@ import { useRef, useState } from "react";
 
 export default function TableDataItem({ event, index, day, time, eventData, setEventData, date, setDate }) {
 
+  const year = [format(date, "yyyy")]
   const week = [format(date, "w")]
 
   const textareaRef = useRef()
@@ -24,7 +25,7 @@ export default function TableDataItem({ event, index, day, time, eventData, setE
             if (editable) {
               setEditable(prev => !prev)
               const newState = produce(eventData, draft => {
-                draft[week][day][time][index] = textareaRef.current.value
+                draft[year][week][day][time][index] = textareaRef.current.value
               })
               setEventData(newState)
             } else {
@@ -56,7 +57,7 @@ export default function TableDataItem({ event, index, day, time, eventData, setE
         </button>
         <button
           onClick={() => {
-            const newState = produce(eventData, draft => { (draft[week][day][time]).splice(index, 1) })
+            const newState = produce(eventData, draft => { (draft[year][week][day][time]).splice(index, 1) })
             setEventData(newState)
           }}
           type="button"

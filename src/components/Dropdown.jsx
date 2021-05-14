@@ -5,6 +5,7 @@ import { merge as _merge } from "lodash"
 
 export default function Dropdown({ showDropdown, setShowDropdown, showDayOptions, setShowDayOptions, showTimeOptions, setShowTimeOptions, weekdays, timeSlots, eventData, setEventData, date, setDate }) {
 
+  const year = [format(date, "yyyy")]
   const week = format(date, "w")
   
   const [errorMessage, setErrorMessage] = useState("")
@@ -16,7 +17,7 @@ export default function Dropdown({ showDropdown, setShowDropdown, showDayOptions
   const dayOptionsClick = () => setShowDayOptions(prev => !prev)
   const timeOptionsClick = () => setShowTimeOptions(prev => !prev)
   
-  const hasEvents = (() => eventData?.[week]?.[selectedDay]?.[selectedTimeSlot])()
+  const hasEvents = (() => eventData?.[year]?.[week]?.[selectedDay]?.[selectedTimeSlot])()
   
   useEffect(() => {
     if (!showDropdown) {
@@ -36,9 +37,11 @@ export default function Dropdown({ showDropdown, setShowDropdown, showDayOptions
       setShowError(true)
     } else if (hasEvents) {
       const newEvent = {
-        [week]: {
-          [selectedDay]: {
-            [selectedTimeSlot]: [...eventData[week][selectedDay][selectedTimeSlot], newEventValue.trim()]
+        [year]: {
+          [week]: {
+            [selectedDay]: {
+              [selectedTimeSlot]: [...eventData[year][week][selectedDay][selectedTimeSlot], newEventValue.trim()]
+            }
           }
         }
       }
@@ -50,11 +53,13 @@ export default function Dropdown({ showDropdown, setShowDropdown, showDayOptions
       setShowError(false)
     } else {
       const newEvent = {
+      [year]: {
         [week]: {
           [selectedDay]: {
             [selectedTimeSlot]: [newEventValue.trim()]
           }
         }
+      }
       }
       const newState = produce(eventData, draft => {
         _merge(draft, newEvent)

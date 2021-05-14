@@ -4,9 +4,10 @@ import TableDataItem from "./TableDataItem"
 
 export default function TableData({ day, time, eventData, setEventData, date, setDate }) {
 
+  const year = [format(date, "yyyy")]
   const week = [format(date, "w")]
 
-  const hasEvents = (() => eventData?.[week]?.[day]?.[time])()
+  const hasEvents = (() => eventData?.[year]?.[week]?.[day]?.[time])()
   
   return (
     <td
