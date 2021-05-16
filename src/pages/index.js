@@ -1,17 +1,18 @@
 import { useState } from 'react'
+import { nextMonday } from "date-fns"
 
 import Calendar from  "../components/Calendar"
 import Navigation from  "../components/Navigation"
 import database from "../database"
 
 const weekdays = [
-  "Monday",
-  "Tuesday",
-  "Wednesday",
-  "Thursday",
-  "Friday",
-  "Saturday",
-  "Sunday"
+  "Mo",
+  "Tu",
+  "We",
+  "Th",
+  "Fr",
+  "Sa",
+  "Su"
 ]
 
 const timeSlots = [
@@ -50,9 +51,9 @@ export default function Home() {
 
   const [date, setDate] = useState(dt)
   const [eventData, setEventData] = useState(database)
-  const [showDropdown, setShowDropdown] = useState(false)
-  const [showDayOptions, setShowDayOptions] = useState(false)
-  const [showTimeOptions, setShowTimeOptions] = useState(false)
+
+  const startOfWeek = new Date((nextMonday(date)).getFullYear(), (nextMonday(date)).getMonth(), (nextMonday(date)).getDate() - 7)
+  const endOfWeek = new Date(startOfWeek.getFullYear(), startOfWeek.getMonth(), startOfWeek.getDate() +6)
 
   return (
 
@@ -64,14 +65,10 @@ export default function Home() {
         setEventData={setEventData}
         timeSlots={timeSlots}
         weekdays={weekdays}
-        showDropdown={showDropdown}
-        setShowDropdown={setShowDropdown}
-        showDayOptions={showDayOptions}
-        setShowDayOptions={setShowDayOptions}
-        showTimeOptions={showTimeOptions}
-        setShowTimeOptions={setShowTimeOptions}
         date={date}
         setDate={setDate}
+        startOfWeek={startOfWeek}
+        endOfWeek={endOfWeek}
       />
       <Calendar
         eventData={eventData}
@@ -80,6 +77,8 @@ export default function Home() {
         weekdays={weekdays}
         date={date}
         setDate={setDate}
+        startOfWeek={startOfWeek}
+        endOfWeek={endOfWeek}
       />
     </div>
         
