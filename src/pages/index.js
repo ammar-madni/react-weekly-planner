@@ -1,5 +1,6 @@
 import { useState } from 'react'
-
+import { format } from "date-fns"
+ 
 import Calendar from  "../components/Calendar"
 import Navigation from  "../components/Navigation"
 import database from "../database"
@@ -42,11 +43,21 @@ const timeSlots = [
   "23pm"
 ]
 
-
-
 export default function Home() {
 
   const dt = new Date()
+
+  database = {
+    [format(dt, "yyyy")]: {
+      [format(dt, "w")]: {
+        "Monday": {
+          "all-day": [
+            "Example event."
+          ]
+        }
+      }
+    }
+  }
 
   const [date, setDate] = useState(dt)
   const [eventData, setEventData] = useState(database)
