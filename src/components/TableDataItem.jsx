@@ -6,7 +6,7 @@ import { useRef, useState } from "react";
 export default function TableDataItem({ event, index, day, time, eventData, setEventData, date, setDate }) {
 
   const year = [format(date, "yyyy")]
-  const week = [format(date, "w")]
+  const week = [format(date, "I")]
 
   const textareaRef = useRef()
   const [editable, setEditable] = useState(false)

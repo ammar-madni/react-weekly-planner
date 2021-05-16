@@ -6,7 +6,7 @@ import { merge as _merge } from "lodash"
 export default function Dropdown({ showDropdown, setShowDropdown, showDayOptions, setShowDayOptions, showTimeOptions, setShowTimeOptions, weekdays, timeSlots, eventData, setEventData, date, setDate }) {
 
   const year = [format(date, "yyyy")]
-  const week = format(date, "w")
+  const week = format(date, "I")
   
   const [errorMessage, setErrorMessage] = useState("")
   const [showError, setShowError] = useState(false)

@@ -5,7 +5,7 @@ import TableDataItem from "./TableDataItem"
 export default function TableData({ day, time, eventData, setEventData, date, setDate }) {
 
   const year = [format(date, "yyyy")]
-  const week = [format(date, "w")]
+  const week = [format(date, "I")]
 
   const hasEvents = (() => eventData?.[year]?.[week]?.[day]?.[time])()
   

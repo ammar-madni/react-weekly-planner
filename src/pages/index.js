@@ -49,7 +49,7 @@ export default function Home() {
 
   database = {
     [format(dt, "yyyy")]: {
-      [format(dt, "w")]: {
+      [format(dt, "I")]: {
         "Monday": {
           "all-day": [
             "Example event."
