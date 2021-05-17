@@ -1,4 +1,4 @@
-import { eachHourOfInterval, format } from "date-fns";
+import { eachHourOfInterval, isToday, format } from "date-fns";
 import { merge as _merge } from "lodash"
 
 import Events from "./Events"
@@ -14,10 +14,12 @@ export default function TableDataItem({ eventData, setEventData, date, setDate, 
 
   hoursOfTheDay.unshift("all-day");
 
+  console.log(day)
+
   return (
     <>
       <div
-        className={(day.getDate() == (new Date).getDate()) ? "w-full text-center text-gray-500 uppercase text-lg py-4 px-6 bg-indigo-100 xl:bg-gray-100 rounded-md xl:rounded-none border-gray-300 border-b-[1px] h-[fit-content]" : "w-full text-center text-gray-500 uppercase text-lg py-4 px-6 bg-gray-100 rounded-md xl:rounded-none border-gray-300 border-b-[1px] h-[fit-content]"}
+        className={isToday(day) ? "w-full text-center text-gray-500 uppercase text-lg py-4 px-6 bg-indigo-100 xl:bg-gray-100 rounded-md xl:rounded-none border-gray-300 border-b-[1px] h-[fit-content]" : "w-full text-center text-gray-500 uppercase text-lg py-4 px-6 bg-gray-100 rounded-md xl:rounded-none border-gray-300 border-b-[1px] h-[fit-content]"}
       >
         {format(day, "EEE d")}
       </div>
