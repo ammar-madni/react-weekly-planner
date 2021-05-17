@@ -1,20 +1,43 @@
-import { format } from "date-fns";
-import produce from "immer"
+import { eachHourOfInterval, format } from "date-fns";
 import { merge as _merge } from "lodash"
-import { useRef, useState } from "react";
 
-export default function TableDataItem({ eventData, setEventData, date, setDate }) {
+import Events from "./Events"
 
-  const year = [format(date, "yyyy")]
-  const week = [format(date, "w")]
+export default function TableDataItem({ eventData, setEventData, date, setDate, day }) {
 
-  const textareaRef = useRef()
-  const [editable, setEditable] = useState(false)
+  const hoursInTheDayAsDate = (eachHourOfInterval({
+    start: (new Date(day.getFullYear(), day.getMonth(), day.getDate(), 0)),
+    end: (new Date(day.getFullYear(), day.getMonth(), day.getDate(), 23))
+  }))
+
+  const hoursOfTheDay = hoursInTheDayAsDate.map(hour => format(hour, "Haaa"))
+
+  hoursOfTheDay.unshift("all-day");
 
   return (
-
-    
-    <div>item</div>
+    <>
+      <div
+        className={(day.getDate() == (new Date).getDate()) ? "w-full text-center text-gray-500 uppercase text-lg py-4 px-6 bg-indigo-100 xl:bg-gray-100 rounded-md xl:rounded-none border-gray-300 border-b-[1px] h-[fit-content]" : "w-full text-center text-gray-500 uppercase text-lg py-4 px-6 bg-gray-100 rounded-md xl:rounded-none border-gray-300 border-b-[1px] h-[fit-content]"}
+      >
+        {format(day, "EEE d")}
+      </div>
+      {hoursOfTheDay.map(hour => (
+        <div
+          key={`${hour} timeSlot`}
+          className="w-full flex flex-col space-y-2 text-gray-500"
+        >
+          <Events
+            key={`${day} tabledataitem`}
+            eventData={eventData}
+            setEventData={setEventData}
+            date={date}
+            setDate={setDate}
+            day={day}
+            hour={hour}
+          />
+        </div>
+      ))}
+    </>
   )
 }
 

@@ -6,7 +6,7 @@ import { merge as _merge } from "lodash"
 export default function Dropdown({ showDropdown, setShowDropdown, weekdays, timeSlots, eventData, setEventData, date, setDate }) {
 
   const year = [format(date, "yyyy")]
-  const week = format(date, "w")
+  const week = format(date, "I")
   
   const [showDayOptions, setShowDayOptions] = useState(false)
   const [showTimeOptions, setShowTimeOptions] = useState(false)
@@ -77,6 +77,7 @@ export default function Dropdown({ showDropdown, setShowDropdown, weekdays, time
       setErrorMessage("Please enter the event you wish to submit.")
       setShowError(true)
     } else if (hasEvents) {
+      console.log(eventData)
       const newEvent = {
         [year]: {
           [week]: {
@@ -114,15 +115,14 @@ export default function Dropdown({ showDropdown, setShowDropdown, weekdays, time
   return (
     <>
       {showDropdown ?
-        <div className="flex flex-col justify-center items-center p-8 space-y-6 dropdown-target bg-gray-100 rounded-md">
-          <div className="dropdown-target flex flex-col space-y-6 w-96">
+        <div className="flex flex-col justify-center items-center p-2 sm:p-8 space-y-6 dropdown-target bg-gray-100 rounded-md">
+          <div className="dropdown-target flex flex-col space-y-6 sm:w-96">
             <div className="dropdown-target flex justify-between items-center">
             <div className="relative inline-block text-left dropdown-target">
               <button
                 onClick={timeOptionsClick}
-                ref={timeOptionDropdown}
                 type="button"
-                className="inline-flex justify-center w-full px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md shadow-sm dropdown-target hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-100 focus:ring-indigo-500">
+                className="inline-flex justify-center w-full px-2 py-1 sm:px-4 sm:py-2 text-[0.8rem] sm:text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md shadow-sm dropdown-target hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-100 focus:ring-indigo-500">
                 {selectedTimeSlot ? selectedTimeSlot : "Time"}
                 <svg
                   className="dropdown-target w-5 h-5 ml-2 -mr-1 dropdown-target"
@@ -135,12 +135,12 @@ export default function Dropdown({ showDropdown, setShowDropdown, weekdays, time
               </button>             
               {showTimeOptions ?
                 <div className="absolute left-0 z-20 mt-2 origin-top-right bg-white rounded-md shadow-lg dropdown-target ring-1 ring-black ring-opacity-5 focus:outline-none">
-                  <div className="py-1 dropdown-target" role="none">
+                  <div ref={timeOptionDropdown} className="py-1 dropdown-target" role="none">
                     {timeSlots.map(timeSlot => (
                       <a
                         key={timeSlot}
                         href="#"
-                        className="block px-4 py-2 text-sm text-gray-700 dropdown-target hover:bg-gray-100"
+                        className="block px-4 py-2 text-[0.8rem] sm:text-sm text-gray-700 dropdown-target hover:bg-gray-100"
                         onClick={e => {
                           setSelectedTimeSlot(e.target.innerText)
                           setShowTimeOptions(false)
@@ -157,9 +157,8 @@ export default function Dropdown({ showDropdown, setShowDropdown, weekdays, time
             <div className="relative inline-block text-left dropdown-target">
               <button
                 onClick={dayOptionsClick}
-                ref={dayOptionDropdown}
                 type="button"
-                className="inline-flex justify-center w-full px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md shadow-sm dropdown-target hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-100 focus:ring-indigo-500">
+                className="inline-flex justify-center w-full px-2 py-1 sm:px-4 sm:py-2 text-[0.8rem] sm:text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md shadow-sm dropdown-target hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-100 focus:ring-indigo-500">
                 {selectedDay ? selectedDay : "Day"}
                 <svg
                   className="dropdown-target w-5 h-5 ml-2 -mr-1 dropdown-target"
@@ -171,12 +170,12 @@ export default function Dropdown({ showDropdown, setShowDropdown, weekdays, time
               </button>
               {showDayOptions ?
                 <div className="absolute left-0 z-20 mt-2 origin-top-right bg-white rounded-md shadow-lg dropdown-target ring-1 ring-black ring-opacity-5 focus:outline-none">
-                  <div className="py-1 dropdown-target" role="none">
+                  <div ref={dayOptionDropdown} className="py-1 dropdown-target" role="none">
                     {weekdays.map(weekday => (
                       <a
                         key={weekday}
                         href="#"
-                        className="block px-4 py-2 text-sm text-gray-700 dropdown-target hover:bg-gray-100"
+                        className="block px-4 py-2 text-[0.8rem] sm:text-sm text-gray-700 dropdown-target hover:bg-gray-100"
                         onClick={e => {
                           setSelectedDay(e.target.innerText)
                           setShowDayOptions(false)
@@ -193,7 +192,7 @@ export default function Dropdown({ showDropdown, setShowDropdown, weekdays, time
             <button
               onClick={handleSubmit}
               type="button"
-              className="uppercase inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-green-600 border border-transparent rounded-md shadow-sm dropdown-target hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
+              className="uppercase inline-flex items-center px-2 py-1 sm:px-4 sm:py-2 text-[0.8rem] sm:text-sm font-medium text-white bg-green-600 border border-transparent rounded-md shadow-sm dropdown-target hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
             >
               Save Event
               <svg

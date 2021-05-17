@@ -1,32 +1,29 @@
 import { eachDayOfInterval, format } from "date-fns"
 import TableData from "./TableData"
 
-export default function Calendar({ timeSlots, weekdays, eventData, setEventData, date, setDate, startOfWeek, endOfWeek }) {
+export default function Calendar({ eventData, setEventData, date, setDate, startOfTheWeek, endOfTheWeek }) {
 
   const daysOfTheWeek = eachDayOfInterval({
-    start: startOfWeek,
-    end: endOfWeek
-  }).map(day => format(day, "EEE d"))
+    start: startOfTheWeek,
+    end: endOfTheWeek
+  })
 
   return (
-    <div className="flex flex-col">
-      <div className="flex divide-x divide-gray-300 bg-gray-200 rounded-md">
+    <div className="flex flex-col overflow-x-auto mb-20 border-gray-300 rounded-md xl:border-[1px]">
+      <div className="flex-auto flex space-x-8 xl:space-x-0 xl:divide-x xl:divide-gray-300">
         {daysOfTheWeek.map(day =>
-          <div
-            key={day}
-            className="flex-auto text-gray-500 font-bold uppercase py-2 px-6"
-          >
-            {day}
-          </div>
+          <TableData
+            key={`${day} tabledata`}
+            eventData={eventData}
+            setEventData={setEventData}
+            date={date}
+            setDate={setDate}
+            daysOfTheWeek={daysOfTheWeek}
+            day={day}
+          />
         )}
       </div>
-      <TableData
-        eventData={eventData}
-        setEventData={setEventData}
-        date={date}
-        setDate={setDate}
-        daysOfTheWeek={daysOfTheWeek}
-      />
+
     </div>
   )
 }

@@ -1,23 +1,23 @@
 import { useState } from 'react'
-import { nextMonday } from "date-fns"
+import { startOfISOWeek, endOfISOWeek, format } from "date-fns"
 
 import Calendar from  "../components/Calendar"
 import Navigation from  "../components/Navigation"
 import database from "../database"
 
 const weekdays = [
-  "Mo",
-  "Tu",
-  "We",
-  "Th",
-  "Fr",
-  "Sa",
-  "Su"
+  "Monday",
+  "Tuesday",
+  "Wednesday",
+  "Thursday",
+  "Friday",
+  "Saturday",
+  "Sunday"
 ]
 
 const timeSlots = [
   "all-day", 
-  "12am",
+  "0am",
   "1am",
   "2am",
   "3am",
@@ -49,16 +49,27 @@ export default function Home() {
 
   const dt = new Date()
 
+  database = {
+    [format(dt, "yyyy")]: {
+      [format(dt, "I")]: {
+        "Monday": {
+          "all-day": [
+            "Example event."
+          ]
+        }
+      }
+    }
+  }
+
   const [date, setDate] = useState(dt)
   const [eventData, setEventData] = useState(database)
 
-  const startOfWeek = new Date((nextMonday(date)).getFullYear(), (nextMonday(date)).getMonth(), (nextMonday(date)).getDate() - 7)
-  const endOfWeek = new Date(startOfWeek.getFullYear(), startOfWeek.getMonth(), startOfWeek.getDate() +6)
-
+  const startOfTheWeek = startOfISOWeek(date)
+  const endOfTheWeek = endOfISOWeek(date)
+  
   return (
-
     <div
-      className="container mx-auto"
+      className="px-4 sm:px-10 container mx-auto"
     >
       <Navigation
         eventData={eventData}
@@ -67,8 +78,8 @@ export default function Home() {
         weekdays={weekdays}
         date={date}
         setDate={setDate}
-        startOfWeek={startOfWeek}
-        endOfWeek={endOfWeek}
+        startOfTheWeek={startOfTheWeek}
+        endOfTheWeek={endOfTheWeek}
       />
       <Calendar
         eventData={eventData}
@@ -77,11 +88,9 @@ export default function Home() {
         weekdays={weekdays}
         date={date}
         setDate={setDate}
-        startOfWeek={startOfWeek}
-        endOfWeek={endOfWeek}
+        startOfTheWeek={startOfTheWeek}
+        endOfTheWeek={endOfTheWeek}
       />
     </div>
-        
-
   )
 }

@@ -1,20 +1,19 @@
-import { format } from "date-fns";
-
 import TableDataItem from "./TableDataItem"
 
-export default function TableData({ eventData, setEventData, date, setDate, daysOfTheWeek }) {
+export default function TableData({ eventData, setEventData, date, setDate, daysOfTheWeek, day }) {
   
   return (
-    <div className="grid grid-cols-7 my-6 bg-pink-400">
-      {daysOfTheWeek.map(day =>
-        <TableDataItem
-          eventData={eventData}
-          setEventData={setEventData}
-          date={date}
-          setDate={setDate}
-          day={day}
-        />
-      )}
+    <div
+      className={(day.getDate() == (new Date).getDate()) ? "flex-auto flex flex-col items-center min-w-[fit-content] pb-10 overflow-hidden  xl:bg-yellow-50 xl:min-h-[40rem] md:min-h-[30rem]" : "flex-auto flex flex-col items-center min-w-[fit-content] pb-10 overflow-hidden xl:min-h-[40rem] md:min-h-[30rem]"}
+    >
+      <TableDataItem
+        key={`${day} tabledataitem`}
+        eventData={eventData}
+        setEventData={setEventData}
+        date={date}
+        setDate={setDate}
+        day={day}
+      />
     </div>
   )
 }

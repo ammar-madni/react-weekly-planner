@@ -3,14 +3,14 @@ import { format } from "date-fns"
 
 import Dropdown from "./Dropdown"
 
-export default function Navigation({ timeSlots, weekdays, eventData, setEventData, date, setDate, startOfWeek, endOfWeek }) {
+export default function Navigation({ timeSlots, weekdays, eventData, setEventData, date, setDate, startOfTheWeek, endOfTheWeek }) {
 
   const [showDropdown, setShowDropdown] = useState(false)
 
   const toggleDropdown = () => setShowDropdown(prev => !prev)
 
   return (
-    <div className="flex flex-col py-14 space-y-10">
+    <div className="flex flex-col py-6 md:py-14 space-y-10">
       <div className="flex-auto flex flex-col md:flex-row items-center justify-between">
         <button
           onClick={toggleDropdown}
@@ -25,10 +25,10 @@ export default function Navigation({ timeSlots, weekdays, eventData, setEventDat
           </svg>
 
         </button>
-        <div className="flex flex-col space-y-1">
+        <div className="flex flex-col space-y-1 mb-6 md:mb-0">
           <div className="flex-auto text-center text-sm tracking-wider font-bold text-gray-700">{format(date, "yyyy")}</div>
           <div className="flex-auto mb-6 text-2xl text-center text-gray-700 md:mb-0">
-            {format(startOfWeek, "do MMM")} - {format(endOfWeek, "do MMM")}
+            {format(startOfTheWeek, "do MMM")} - {format(endOfTheWeek, "do MMM")}
           </div>
         </div>
         <div className="flex mb-6 space-x-4 md:mb-0">
