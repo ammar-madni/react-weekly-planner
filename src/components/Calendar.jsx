@@ -1,55 +1,29 @@
+import { eachDayOfInterval, format } from "date-fns"
 import TableData from "./TableData"
 
-export default function Calendar({ timeSlots, weekdays, eventData, setEventData, date, setDate }) {
-  return (
-    <div className="flex flex-col">
-      <div className="-my-2 sm:-mx-6 lg:-mx-8">
-        <div className="inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8">
-          <div className="border-b border-gray-200 shadow sm:rounded-lg">
-            <table className="min-w-full divide-y divide-gray-200">
-              <thead className="bg-gray-50">
-                <tr className="divide-x">
-                  <th
-                    scope="col"
-                    className="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase"
-                  >
-                  </th>
-                  {weekdays.map(day => (
-                    <th
-                      key={day}
-                      scope="col"
-                      className="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase"
-                    >
-                      {day}
-                    </th>
-                  ))}
-                </tr>
-              </thead>
-              <tbody className="bg-white divide-y divide-gray-200">
-                {timeSlots.map((timeSlot, index) => (
-                  <tr key={index} className="divide-x">
-                    <td className="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase bg-gray-50">
-                      {timeSlot}
-                    </td>
-                    {weekdays.map((day, index2) => (
-                      <TableData
-                        key={`${index} ${index2}`}
-                        day={day}
-                        time={timeSlot}
-                        eventData={eventData}
-                        setEventData={setEventData}
-                        date={date}
-                        setDate={setDate}
-                      />
-                    ))}
-                  </tr>
+export default function Calendar({ eventData, setEventData, date, setDate, startOfTheWeek, endOfTheWeek }) {
 
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </div>
+  const daysOfTheWeek = eachDayOfInterval({
+    start: startOfTheWeek,
+    end: endOfTheWeek
+  })
+
+  return (
+    <div className="flex flex-col overflow-x-auto mb-20 border-gray-300 rounded-md xl:border-[1px]">
+      <div className="flex-auto flex space-x-8 xl:space-x-0 xl:divide-x xl:divide-gray-300">
+        {daysOfTheWeek.map(day =>
+          <TableData
+            key={`${day} tabledata`}
+            eventData={eventData}
+            setEventData={setEventData}
+            date={date}
+            setDate={setDate}
+            daysOfTheWeek={daysOfTheWeek}
+            day={day}
+          />
+        )}
       </div>
+
     </div>
   )
 }

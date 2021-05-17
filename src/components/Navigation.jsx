@@ -1,16 +1,19 @@
+import { useState } from "react"
 import { format } from "date-fns"
 
 import Dropdown from "./Dropdown"
 
-export default function Navigation({ showDropdown, setShowDropdown, showDayOptions, setShowDayOptions, showTimeOptions, setShowTimeOptions, timeSlots, weekdays, eventData, setEventData, date, setDate }) {
+export default function Navigation({ timeSlots, weekdays, eventData, setEventData, date, setDate, startOfTheWeek, endOfTheWeek }) {
 
-  const openDropdown = () => setShowDropdown(prev => !prev)
+  const [showDropdown, setShowDropdown] = useState(false)
+
+  const toggleDropdown = () => setShowDropdown(prev => !prev)
 
   return (
-    <div className="flex flex-col py-14 space-y-10">
+    <div className="flex flex-col py-6 md:py-14 space-y-10">
       <div className="flex-auto flex flex-col md:flex-row items-center justify-between">
         <button
-          onClick={openDropdown}
+          onClick={toggleDropdown}
           type="button"
           className="uppercase inline-flex items-center order-last px-4 py-2 text-sm font-medium text-white bg-indigo-600 border border-transparent rounded-md shadow-sm dropdown-target hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 md:order-first"
         >
@@ -22,8 +25,11 @@ export default function Navigation({ showDropdown, setShowDropdown, showDayOptio
           </svg>
 
         </button>
-        <div className="mb-6 text-2xl font-semibold text-center text-gray-700 md:mb-0">
-          {format(date, "do MMMM yyyy")}
+        <div className="flex flex-col space-y-1 mb-6 md:mb-0">
+          <div className="flex-auto text-center text-sm tracking-wider font-bold text-gray-700">{format(date, "yyyy")}</div>
+          <div className="flex-auto mb-6 text-2xl text-center text-gray-700 md:mb-0">
+            {format(startOfTheWeek, "do MMM")} - {format(endOfTheWeek, "do MMM")}
+          </div>
         </div>
         <div className="flex mb-6 space-x-4 md:mb-0">
           <span className="">
@@ -36,8 +42,10 @@ export default function Navigation({ showDropdown, setShowDropdown, showDayOptio
               type="button"
               className="uppercase inline-flex items-center px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
             >
-              Prev
-              </button>
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+              </svg>
+            </button>
           </span>
           <span className="">
             <button
@@ -51,8 +59,10 @@ export default function Navigation({ showDropdown, setShowDropdown, showDayOptio
               type="button"
               className="uppercase inline-flex items-center px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
             >
-              Next
-              </button>
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 transform rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+              </svg>
+            </button>
           </span>
         </div>
       </div>
@@ -63,10 +73,6 @@ export default function Navigation({ showDropdown, setShowDropdown, showDayOptio
           weekdays={weekdays}
           eventData={eventData}
           setEventData={setEventData}
-          showDayOptions={showDayOptions}
-          setShowDayOptions={setShowDayOptions}
-          showTimeOptions={showTimeOptions}
-          setShowTimeOptions={setShowTimeOptions}
           date={date}
           setDate={setDate}
         />

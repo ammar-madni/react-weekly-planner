@@ -1,6 +1,6 @@
 import { useState } from 'react'
-import { format } from "date-fns"
- 
+import { startOfISOWeek, endOfISOWeek, format } from "date-fns"
+
 import Calendar from  "../components/Calendar"
 import Navigation from  "../components/Navigation"
 import database from "../database"
@@ -17,7 +17,7 @@ const weekdays = [
 
 const timeSlots = [
   "all-day", 
-  "12am",
+  "0am",
   "1am",
   "2am",
   "3am",
@@ -61,28 +61,23 @@ export default function Home() {
 
   const [date, setDate] = useState(dt)
   const [eventData, setEventData] = useState(database)
-  const [showDropdown, setShowDropdown] = useState(false)
-  const [showDayOptions, setShowDayOptions] = useState(false)
-  const [showTimeOptions, setShowTimeOptions] = useState(false)
 
+  const startOfTheWeek = startOfISOWeek(date)
+  const endOfTheWeek = endOfISOWeek(date)
+  
   return (
-
     <div
-      className="container mx-auto"
+      className="px-4 sm:px-10 container mx-auto"
     >
       <Navigation
         eventData={eventData}
         setEventData={setEventData}
         timeSlots={timeSlots}
         weekdays={weekdays}
-        showDropdown={showDropdown}
-        setShowDropdown={setShowDropdown}
-        showDayOptions={showDayOptions}
-        setShowDayOptions={setShowDayOptions}
-        showTimeOptions={showTimeOptions}
-        setShowTimeOptions={setShowTimeOptions}
         date={date}
         setDate={setDate}
+        startOfTheWeek={startOfTheWeek}
+        endOfTheWeek={endOfTheWeek}
       />
       <Calendar
         eventData={eventData}
@@ -91,9 +86,9 @@ export default function Home() {
         weekdays={weekdays}
         date={date}
         setDate={setDate}
+        startOfTheWeek={startOfTheWeek}
+        endOfTheWeek={endOfTheWeek}
       />
     </div>
-        
-
   )
 }

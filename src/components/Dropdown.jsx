@@ -1,21 +1,38 @@
-import { useEffect, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import produce from "immer"
 import { format } from "date-fns"
 import { merge as _merge } from "lodash"
 
-export default function Dropdown({ showDropdown, setShowDropdown, showDayOptions, setShowDayOptions, showTimeOptions, setShowTimeOptions, weekdays, timeSlots, eventData, setEventData, date, setDate }) {
+export default function Dropdown({ showDropdown, setShowDropdown, weekdays, timeSlots, eventData, setEventData, date, setDate }) {
 
   const year = [format(date, "yyyy")]
   const week = format(date, "I")
   
+  const [showDayOptions, setShowDayOptions] = useState(false)
+  const [showTimeOptions, setShowTimeOptions] = useState(false)
   const [errorMessage, setErrorMessage] = useState("")
   const [showError, setShowError] = useState(false)
   const [selectedTimeSlot, setSelectedTimeSlot] = useState(null)
   const [selectedDay, setSelectedDay] = useState(null)
   const [newEventValue, setNewEventValue] = useState("")
+
+  const timeOptionDropdown = useRef()
+  const dayOptionDropdown = useRef()
   
   const dayOptionsClick = () => setShowDayOptions(prev => !prev)
   const timeOptionsClick = () => setShowTimeOptions(prev => !prev)
+  const handleClickOutsideTimeOptionDropdown = e => {
+    if (timeOptionDropdown.current.contains(e.target)) {
+      return
+    }
+    setShowTimeOptions(false)
+  }
+  const handleClickOutsideDayOptionDropdown = e => {
+    if (dayOptionDropdown.current.contains(e.target)) {
+      return
+    }
+    setShowDayOptions(false)
+  }
   
   const hasEvents = (() => eventData?.[year]?.[week]?.[selectedDay]?.[selectedTimeSlot])()
   
@@ -24,6 +41,30 @@ export default function Dropdown({ showDropdown, setShowDropdown, showDayOptions
       setShowError(false)
     }
   },[showDropdown])
+
+  useEffect(() => {
+    if (showTimeOptions) {
+      document.addEventListener("mousedown", handleClickOutsideTimeOptionDropdown);
+    } else {
+      document.removeEventListener("mousedown", handleClickOutsideTimeOptionDropdown);
+    }
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutsideTimeOptionDropdown);
+    };
+  }, [showTimeOptions])
+
+  useEffect(() => {
+    if (showDayOptions) {
+      document.addEventListener("mousedown", handleClickOutsideDayOptionDropdown);
+    } else {
+      document.removeEventListener("mousedown", handleClickOutsideDayOptionDropdown);
+    }
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutsideDayOptionDropdown);
+    };
+  }, [showDayOptions])
 
   const handleSubmit = () => {
     if (!selectedTimeSlot) {
@@ -36,6 +77,7 @@ export default function Dropdown({ showDropdown, setShowDropdown, showDayOptions
       setErrorMessage("Please enter the event you wish to submit.")
       setShowError(true)
     } else if (hasEvents) {
+      console.log(eventData)
       const newEvent = {
         [year]: {
           [week]: {
@@ -73,24 +115,32 @@ export default function Dropdown({ showDropdown, setShowDropdown, showDayOptions
   return (
     <>
       {showDropdown ?
-        <div className="flex flex-col justify-center items-center p-8 space-y-6 dropdown-target bg-gray-100 rounded-md">
-          <div className="dropdown-target flex flex-col space-y-6 w-96">
+        <div className="flex flex-col justify-center items-center p-2 sm:p-8 space-y-6 dropdown-target bg-gray-100 rounded-md">
+          <div className="dropdown-target flex flex-col space-y-6 sm:w-96">
             <div className="dropdown-target flex justify-between items-center">
             <div className="relative inline-block text-left dropdown-target">
-              <button onClick={timeOptionsClick} type="button" className="inline-flex justify-center w-full px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md shadow-sm dropdown-target hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-100 focus:ring-indigo-500">
+              <button
+                onClick={timeOptionsClick}
+                type="button"
+                className="inline-flex justify-center w-full px-2 py-1 sm:px-4 sm:py-2 text-[0.8rem] sm:text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md shadow-sm dropdown-target hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-100 focus:ring-indigo-500">
                 {selectedTimeSlot ? selectedTimeSlot : "Time"}
-                <svg className="dropdown-target w-5 h-5 ml-2 -mr-1 dropdown-target" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                <svg
+                  className="dropdown-target w-5 h-5 ml-2 -mr-1 dropdown-target"
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 20 20"
+                  fill="currentColor"
+                  aria-hidden="true">
                   <path className="dropdown-target" fillRule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clipRule="evenodd" />
                 </svg>
               </button>             
               {showTimeOptions ?
                 <div className="absolute left-0 z-20 mt-2 origin-top-right bg-white rounded-md shadow-lg dropdown-target ring-1 ring-black ring-opacity-5 focus:outline-none">
-                  <div className="py-1 dropdown-target" role="none">
+                  <div ref={timeOptionDropdown} className="py-1 dropdown-target" role="none">
                     {timeSlots.map(timeSlot => (
                       <a
                         key={timeSlot}
                         href="#"
-                        className="block px-4 py-2 text-sm text-gray-700 dropdown-target hover:bg-gray-100"
+                        className="block px-4 py-2 text-[0.8rem] sm:text-sm text-gray-700 dropdown-target hover:bg-gray-100"
                         onClick={e => {
                           setSelectedTimeSlot(e.target.innerText)
                           setShowTimeOptions(false)
@@ -105,22 +155,27 @@ export default function Dropdown({ showDropdown, setShowDropdown, showDayOptions
               }
             </div>
             <div className="relative inline-block text-left dropdown-target">
-              <div>
-                <button onClick={dayOptionsClick} type="button" className="inline-flex justify-center w-full px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md shadow-sm dropdown-target hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-100 focus:ring-indigo-500">
-                  {selectedDay ? selectedDay : "Day"}
-                  <svg className="dropdown-target w-5 h-5 ml-2 -mr-1 dropdown-target" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                    <path className="dropdown-target" fillRule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clipRule="evenodd" />
-                  </svg>
-                </button>
-              </div>
+              <button
+                onClick={dayOptionsClick}
+                type="button"
+                className="inline-flex justify-center w-full px-2 py-1 sm:px-4 sm:py-2 text-[0.8rem] sm:text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md shadow-sm dropdown-target hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-100 focus:ring-indigo-500">
+                {selectedDay ? selectedDay : "Day"}
+                <svg
+                  className="dropdown-target w-5 h-5 ml-2 -mr-1 dropdown-target"
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 20 20" fill="currentColor"
+                  aria-hidden="true">
+                  <path className="dropdown-target" fillRule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clipRule="evenodd" />
+                </svg>
+              </button>
               {showDayOptions ?
                 <div className="absolute left-0 z-20 mt-2 origin-top-right bg-white rounded-md shadow-lg dropdown-target ring-1 ring-black ring-opacity-5 focus:outline-none">
-                  <div className="py-1 dropdown-target" role="none">
+                  <div ref={dayOptionDropdown} className="py-1 dropdown-target" role="none">
                     {weekdays.map(weekday => (
                       <a
                         key={weekday}
                         href="#"
-                        className="block px-4 py-2 text-sm text-gray-700 dropdown-target hover:bg-gray-100"
+                        className="block px-4 py-2 text-[0.8rem] sm:text-sm text-gray-700 dropdown-target hover:bg-gray-100"
                         onClick={e => {
                           setSelectedDay(e.target.innerText)
                           setShowDayOptions(false)
@@ -137,7 +192,7 @@ export default function Dropdown({ showDropdown, setShowDropdown, showDayOptions
             <button
               onClick={handleSubmit}
               type="button"
-              className="uppercase inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-green-600 border border-transparent rounded-md shadow-sm dropdown-target hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
+              className="uppercase inline-flex items-center px-2 py-1 sm:px-4 sm:py-2 text-[0.8rem] sm:text-sm font-medium text-white bg-green-600 border border-transparent rounded-md shadow-sm dropdown-target hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
             >
               Save Event
               <svg
