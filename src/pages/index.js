@@ -3,7 +3,6 @@ import { startOfISOWeek, endOfISOWeek, format } from "date-fns"
 
 import Calendar from  "../components/Calendar"
 import Navigation from  "../components/Navigation"
-import database from "../database"
 
 const weekdays = [
   "Monday",
@@ -16,7 +15,7 @@ const weekdays = [
 ]
 
 const timeSlots = [
-  "all-day", 
+  "24H", 
   "0am",
   "1am",
   "2am",
@@ -47,11 +46,11 @@ export default function Home() {
 
   const dt = new Date()
 
-  database = {
+  const database = {
     [format(dt, "yyyy")]: {
       [format(dt, "I")]: {
         "Monday": {
-          "all-day": [
+          "24H": [
             "Example event."
           ]
         }

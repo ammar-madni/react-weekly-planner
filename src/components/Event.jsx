@@ -59,7 +59,6 @@ export default function Event({ eventData, setEventData, date, setDate, day, hou
       </button>
       <button
         onClick={() => {
-          console.log(hour)
           const newState = produce(eventData, draft => { (draft[year][week][format(day, "EEEE")][hour]).splice(index, 1) })
           setEventData(newState)
         }}

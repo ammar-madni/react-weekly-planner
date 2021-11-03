@@ -77,7 +77,6 @@ export default function Dropdown({ showDropdown, setShowDropdown, weekdays, time
       setErrorMessage("Please enter the event you wish to submit.")
       setShowError(true)
     } else if (hasEvents) {
-      console.log(eventData)
       const newEvent = {
         [year]: {
           [week]: {
@@ -135,7 +134,7 @@ export default function Dropdown({ showDropdown, setShowDropdown, weekdays, time
               </button>             
               {showTimeOptions ?
                 <div className="absolute left-0 z-20 mt-2 origin-top-right bg-white rounded-md shadow-lg dropdown-target ring-1 ring-black ring-opacity-5 focus:outline-none">
-                  <div ref={timeOptionDropdown} className="py-1 dropdown-target" role="none">
+                  <div ref={timeOptionDropdown} className="py-1 h-64 overflow-y-auto dropdown-target" role="none">
                     {timeSlots.map(timeSlot => (
                       <a
                         key={timeSlot}

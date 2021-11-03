@@ -12,9 +12,7 @@ export default function TableDataItem({ eventData, setEventData, date, setDate, 
 
   const hoursOfTheDay = hoursInTheDayAsDate.map(hour => format(hour, "Haaa"))
 
-  hoursOfTheDay.unshift("all-day");
-
-  console.log(day)
+  hoursOfTheDay.unshift("24H");
 
   return (
     <>
